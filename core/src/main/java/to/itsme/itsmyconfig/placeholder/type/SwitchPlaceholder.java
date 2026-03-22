@@ -25,6 +25,7 @@ public final class SwitchPlaceholder extends Placeholder {
         this.input = section.getString("input", "");
         this.ignoreCase = section.getBoolean("ignorecase", false);
         this.defaultValue = section.getString("default", "");
+        this.registerArguments(this.input);
 
         final ConfigurationSection valuesSection = section.getConfigurationSection("values");
         if (valuesSection == null) {
