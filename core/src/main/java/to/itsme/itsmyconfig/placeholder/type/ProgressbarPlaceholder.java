@@ -14,10 +14,35 @@ public final class ProgressbarPlaceholder extends Placeholder {
     /**
      * Represents the pattern used for rendering a progress bar.
      */
-    private final String pattern;
-    private final String completedColor;
-    private final String progressColor;
-    private final String remainingColor;
+    private final String pattern, /**
+     * The completedColor variable represents the color used to display the completed part of the progress bar.
+     * <p>
+     * It is a private instance variable of the ProgressBar class.
+     * <p>
+     * Example usage:
+     * ProgressBar progressBar = new ProgressBar("key", "pattern", "completedColor", "progressColor", "remainingColor");
+     * String color = progressBar.completedColor;
+     */
+    completedColor, /**
+     * The progressColor variable holds the color used to represent the progress in a ProgressBar object.
+     * <p>
+     * Possible values can be any valid color string supported by the application.
+     * This color will be used to render the portion of the progress bar that represents the completed progress.
+     * <p>
+     * The progressColor is set during the initialization of a ProgressBar object through the constructor.
+     * It cannot be changed once the object is created.
+     * <p>
+     * This variable is used internally by the ProgressBar class in the calculation and rendering of the progress bar.
+     *
+     * @see ProgressbarPlaceholder
+     * @see ProgressbarPlaceholder#render(double, double)
+     * @see ProgressbarPlaceholder#buildProgressBar(int)
+     */
+    progressColor, /**
+     * Represents the color used to display the remaining part of the progress bar.
+     */
+    remainingColor;
+
     private final String completedSymbol;
     private final String progressSymbol;
     private final String remainingSymbol;
@@ -32,7 +57,7 @@ public final class ProgressbarPlaceholder extends Placeholder {
     ) {
         super(section, filePath, PlaceholderType.PROGRESS_BAR, PlaceholderDependancy.NONE);
         this.pattern = section.getString("value");
-        this.completedColor = section.getString("completed-color");
+        this.completedColor =  section.getString("completed-color");
         this.progressColor = section.getString("progress-color");
         this.remainingColor = section.getString("remaining-color");
         this.completedSymbol = section.getString("completed-symbol", null);
@@ -78,40 +103,40 @@ public final class ProgressbarPlaceholder extends Placeholder {
      * @return The progress bar as a string.
      */
     private String buildProgressBar(final int completed) {
-        final StringBuilder sb = new StringBuilder();
+        final StringBuilder stringBuilder = new StringBuilder();
 
         if (completedSymbol != null || progressSymbol != null || remainingSymbol != null) {
-            // New symbol-based mode
+            // Symbol-based mode
             final String cChar = completedSymbol != null ? completedSymbol : "\u2588";
             final String pChar = progressSymbol != null ? progressSymbol : cChar;
             final String rChar = remainingSymbol != null ? remainingSymbol : "\u2591";
 
             if (completed > 0) {
-                sb.append(completedColor);
-                sb.append(cChar.repeat(completed));
+                stringBuilder.append(completedColor);
+                stringBuilder.append(cChar.repeat(completed));
             }
             if (completed < length) {
-                sb.append(progressColor);
-                sb.append(pChar);
+                stringBuilder.append(progressColor);
+                stringBuilder.append(pChar);
                 if (completed + 1 < length) {
-                    sb.append(remainingColor);
-                    sb.append(rChar.repeat(length - completed - 1));
+                    stringBuilder.append(remainingColor);
+                    stringBuilder.append(rChar.repeat(length - completed - 1));
                 }
             }
         } else {
-            // Original pattern-based mode (backward compatible)
+            // Pattern-based mode
             if (completed != 0) {
-                sb.append(completedColor);
-                sb.append(pattern, 0, completed);
+                stringBuilder.append(completedColor);
+                stringBuilder.append(pattern, 0, completed);
             }
             if (completed != pattern.length()) {
-                sb.append(progressColor);
-                sb.append(pattern, completed, completed + 1);
-                sb.append(remainingColor);
-                sb.append(pattern, completed + 1, pattern.length());
+                stringBuilder.append(progressColor);
+                stringBuilder.append(pattern, completed, completed + 1);
+                stringBuilder.append(remainingColor);
+                stringBuilder.append(pattern, completed + 1, pattern.length());
             }
         }
-        return sb.toString();
+        return stringBuilder.toString();
     }
 
     @Override

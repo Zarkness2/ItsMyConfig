@@ -24,7 +24,10 @@ public final class ListPlaceholder extends Placeholder {
     }
 
     @Override
-    public String getResult(final OfflinePlayer player, final String[] args) {
+    public String getResult(
+            final OfflinePlayer player,
+            final String[] args
+    ) {
         if (args.length == 0) {
             return defaultValue;
         }

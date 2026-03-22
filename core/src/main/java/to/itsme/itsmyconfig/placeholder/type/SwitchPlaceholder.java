@@ -13,6 +13,24 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * YAML:
+ * custom-placeholder:
+ *   switch-type-placeholder:
+ *     type: switch
+ *     input: "%some_placeholder%"
+ *     # Optional:
+ *     # default: ""
+ *     # ignorecase: true
+ *     values:
+ *       "value1": "result1"
+ *       "value2": "result2"
+ *
+ * Usage:
+ * %itsmyconfig_switch-type-placeholder%
+ * or with args:
+ * %itsmyconfig_switch-type-placeholder_arg0::arg1%
+ */
 public final class SwitchPlaceholder extends Placeholder {
 
     private final String input;
@@ -20,7 +38,10 @@ public final class SwitchPlaceholder extends Placeholder {
     private final boolean ignoreCase;
     private final String defaultValue;
 
-    public SwitchPlaceholder(final String filePath, final ConfigurationSection section) {
+    public SwitchPlaceholder(
+            final String filePath,
+            final ConfigurationSection section
+    ) {
         super(section, filePath, PlaceholderType.SWITCH, PlaceholderDependancy.PLAYER);
         this.input = section.getString("input", "");
         this.ignoreCase = section.getBoolean("ignorecase", false);
@@ -48,7 +69,10 @@ public final class SwitchPlaceholder extends Placeholder {
     }
 
     @Override
-    public String getResult(final OfflinePlayer player, final String[] args) {
+    public String getResult(
+            final OfflinePlayer player,
+            final String[] args
+    ) {
         // Resolve input: replace {0}, {1}... then resolve PAPI placeholders
         String resolvedInput = this.replaceArguments(args, this.input);
         if (player != null) {
