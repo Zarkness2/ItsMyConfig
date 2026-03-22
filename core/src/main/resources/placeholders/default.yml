@@ -59,3 +59,92 @@ custom-placeholder:
     type: math
     rounding: HALF_UP
     precision: 1
+
+  # ── Requirement examples ──
+
+  # AND mode (default): all requirements must pass.
+  # Usage: %itsmyconfig_req-and-example%
+  req-and-example:
+    type: string
+    value: "&aYou meet all conditions"
+    requirements:
+      has-money:
+        type: ">="
+        input: "%vault_eco_balance%"
+        output: "100"
+        deny: "&cYou need at least 100 coins"
+      has-level:
+        type: ">="
+        input: "%player_level%"
+        output: "10"
+        deny: "&cYou need at least level 10"
+
+  # OR mode: at least one requirement must pass.
+  # Usage: %itsmyconfig_req-or-example%
+  req-or-example:
+    type: string
+    value: "&aAccess granted"
+    requirements:
+      mode: or
+      is-vip:
+        type: string equals
+        input: "%luckperms_has_permission_vip.access%"
+        output: "true"
+        deny: "&cYou are not VIP"
+      is-admin:
+        type: string equals
+        input: "%luckperms_has_permission_admin.access%"
+        output: "true"
+        deny: "&cYou are not Admin"
+
+  # XOR mode: exactly one requirement must pass.
+  # Usage: %itsmyconfig_req-xor-example%
+  req-xor-example:
+    type: string
+    value: "&aExactly one condition met"
+    requirements:
+      mode: xor
+      is-op:
+        type: string equals
+        input: "%player_is_op%"
+        output: "true"
+        deny: "&cCondition not met"
+      is-vip:
+        type: string equals
+        input: "%luckperms_has_permission_vip.access%"
+        output: "true"
+        deny: "&cCondition not met"
+
+  # Negate: inverts the result of a requirement.
+  # Here "not banned" means the player must NOT match output "true".
+  # Usage: %itsmyconfig_req-negate-example%
+  req-negate-example:
+    type: string
+    value: "&aYou are not banned"
+    requirements:
+      not-banned:
+        type: string equals
+        input: "%player_is_banned%"
+        output: "true"
+        negate: true
+        deny: "&cYou are banned"
+
+  # Combined: OR mode with negate.
+  # Pass if VIP or not banned.
+  # Usage: %itsmyconfig_req-combined-example%
+  req-combined-example:
+    type: string
+    value: "&aWelcome!"
+    requirements:
+      mode: or
+      is-vip:
+        type: string equals
+        input: "%luckperms_has_permission_vip.access%"
+        output: "true"
+        deny: "&cAccess denied"
+      not-banned:
+        type: string equals
+        input: "%player_is_banned%"
+        output: "true"
+        negate: true
+        deny: "&cYou are banned"

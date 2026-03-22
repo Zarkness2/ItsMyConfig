@@ -132,6 +132,25 @@ custom-placeholder:
     progress-color: "&e"
     remaining-color: "&8"
 
+  # Example of a reusable progress bar.
+  # Config defines default symbols and colors, but they can be overridden via args.
+  # Args: value::max::length::completed-symbol::progress-symbol::remaining-symbol::completed-color::progress-color::remaining-color
+  # Skip an arg with empty (::) to keep the config default.
+  #
+  # Usage with defaults:            %itsmyconfig_reusable-bar_50::100%
+  # Override colors only:           %itsmyconfig_reusable-bar_50::100::::::&b::&3::&8%
+  # Override length and colors:     %itsmyconfig_reusable-bar_50::100::10::::&c::&6::&7%
+  # Override everything:            %itsmyconfig_reusable-bar_50::100::15::#::>::-::&a::&e::&8%
+  reusable-bar:
+    type: progress_bar
+    length: 20
+    completed-symbol: "█"
+    progress-symbol: "▓"
+    remaining-symbol: "░"
+    completed-color: "&a"
+    progress-color: "&e"
+    remaining-color: "&8"
+
   # Example of a random string.
   # Randomly selects one value from the list each time it's used.
   example-random:
