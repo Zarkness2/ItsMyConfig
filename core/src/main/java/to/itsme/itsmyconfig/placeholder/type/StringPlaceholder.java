@@ -28,7 +28,11 @@ public final class StringPlaceholder extends Placeholder {
             final ConfigurationSection section
     ) {
         super(section, filePath, PlaceholderType.STRING, PlaceholderDependancy.NONE);
-        this.message = section.getString("value", "");
+        if (section.isList("values")) {
+            this.message = String.join("\n", section.getStringList("values"));
+        } else {
+            this.message = section.getString("value", "");
+        }
         this.registerArguments(this.message);
     }
 
@@ -50,7 +54,12 @@ public final class StringPlaceholder extends Placeholder {
      */
     @Override
     public boolean reloadFromSection() {
-        this.message = this.getConfigurationSection().getString("value", "");
+        final ConfigurationSection section = this.getConfigurationSection();
+        if (section.isList("values")) {
+            this.message = String.join("\n", section.getStringList("values"));
+        } else {
+            this.message = section.getString("value", "");
+        }
         return true;
     }
 

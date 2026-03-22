@@ -383,7 +383,12 @@ public final class ItsMyConfig extends JavaPlugin {
             // Load requirements if they exist
             if (placeholderSection.isConfigurationSection("requirements")) {
                 final ConfigurationSection requirementsSection = placeholderSection.getConfigurationSection("requirements");
+
+                // Read mode: "and" (default), "or", "xor"
+                placeholder.setRequirementMode(requirementsSection.getString("mode", "and"));
+
                 for (final String reqIdentifier : requirementsSection.getKeys(false)) {
+                    if (reqIdentifier.equals("mode")) continue; // skip the mode key
                     final ConfigurationSection reqSection = requirementsSection.getConfigurationSection(reqIdentifier);
                     if (reqSection != null) {
                         placeholder.registerRequirement(reqSection);
@@ -417,6 +422,7 @@ public final class ItsMyConfig extends JavaPlugin {
             case COLOR -> new ColorPlaceholder(filePath, section);
             case COLORED_TEXT -> new ColoredTextPlaceholder(filePath, section);
             case PROGRESS_BAR -> new ProgressbarPlaceholder(filePath, section);
+            case SWITCH -> new SwitchPlaceholder(filePath, section);
             default -> new StringPlaceholder(filePath, section);
         };
     }

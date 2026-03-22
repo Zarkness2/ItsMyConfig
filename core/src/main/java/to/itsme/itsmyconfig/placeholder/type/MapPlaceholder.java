@@ -9,6 +9,7 @@ import to.itsme.itsmyconfig.placeholder.PlaceholderType;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * YAML:
@@ -55,7 +56,12 @@ public final class MapPlaceholder extends Placeholder {
         final Map<String, String> tmp = new HashMap<>(Math.max(16, capacity));
         for (final String key : values.getKeys(false)) {
             final Object raw = values.get(key);
-            final String value = raw == null ? "" : String.valueOf(raw);
+            final String value;
+            if (raw instanceof java.util.List<?> list) {
+                value = list.stream().map(String::valueOf).collect(Collectors.joining("\n"));
+            } else {
+                value = raw == null ? "" : String.valueOf(raw);
+            }
             tmp.put(normalizeKey(key), value);
         }
 

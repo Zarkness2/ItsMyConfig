@@ -34,7 +34,8 @@ public enum PlaceholderType {
      */
     ANIMATION,
     PROGRESS_BAR,
-    COLORED_TEXT;
+    COLORED_TEXT,
+    SWITCH;
 
     /**
      * Finds the PlaceholderType for the given type.

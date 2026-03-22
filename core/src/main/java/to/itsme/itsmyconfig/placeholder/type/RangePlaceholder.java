@@ -8,6 +8,7 @@ import to.itsme.itsmyconfig.placeholder.PlaceholderDependancy;
 import to.itsme.itsmyconfig.placeholder.PlaceholderType;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * YAML:
@@ -64,7 +65,12 @@ public final class RangePlaceholder extends Placeholder {
         final List<Entry> entries = new ArrayList<>();
         for (final String key : cfg.getKeys(false)) {
             final Object raw = cfg.get(key);
-            final String value = raw == null ? "" : String.valueOf(raw);
+            final String value;
+            if (raw instanceof java.util.List<?> list) {
+                value = list.stream().map(String::valueOf).collect(Collectors.joining("\n"));
+            } else {
+                value = raw == null ? "" : String.valueOf(raw);
+            }
 
             final Range r = parseRangeKey(key);
             if (r == null) {
